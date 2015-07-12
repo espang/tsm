@@ -4,6 +4,8 @@ Time series managment daemon.
 
 ## Motivation
 
+Motivation for this project...
+
 ## Time series
 
 Time series are represented by following attributes:
