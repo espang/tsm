@@ -4,7 +4,7 @@ Time series managment written in golang.
 
 ## Project Status
 
-The project is in development...
+The project is in development and far from being ready to use.
 
 ## Getting started
 

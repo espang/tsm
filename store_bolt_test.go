@@ -40,7 +40,7 @@ func TestWriteRead(t *testing.T) {
 	}
 }
 
-func TestWriteDescribe(t *testing.T) {
+func TestWriteDescribe1(t *testing.T) {
 	n := 24
 	d := genTimeseries(n)
 	id := uuid()
@@ -65,7 +65,6 @@ func TestWriteDescribe(t *testing.T) {
 		total += math.Pow(val-mean, 2)
 	}
 	std := math.Sqrt(total / float64(n-1))
-	log.Println("Std: ", std)
 	sdesc := &Description{
 		Count:  n,
 		First:  start,
@@ -82,6 +81,47 @@ func TestWriteDescribe(t *testing.T) {
 	}
 }
 
+func TestWriteDescribe2(t *testing.T) {
+	n := 25
+	d := genTimeseries(n)
+	id := uuid()
+	domain := "testing"
+
+	err := store.WriteData(id, domain, d)
+	if err != nil {
+		t.Errorf("Error writing %s", err)
+	}
+
+	start := d.Times[0]
+	end := d.Times[len(d.Times)-1]
+
+	desc, err := store.Describe(id, domain)
+	if err != nil {
+		t.Errorf("Error describe %s", err)
+	}
+
+	total := 0.
+	mean := 12.
+	for _, val := range d.Values {
+		total += math.Pow(val-mean, 2)
+	}
+	std := math.Sqrt(total / float64(n-1))
+	sdesc := &Description{
+		Count:  n,
+		First:  start,
+		Last:   end,
+		Min:    0.,
+		Max:    24.,
+		Mean:   12,
+		Median: 12,
+		Std:    std,
+	}
+	err = describe(desc, sdesc)
+	if err != nil {
+		t.Errorf("Read values not equal to written %s", err)
+	}
+}
+
 func genTimeseries(n int) *Data {
 	d := &Data{}
 
@@ -89,6 +129,7 @@ func genTimeseries(n int) *Data {
 	for i := 0; i < n; i++ {
 		d.Times = append(d.Times, t)
 		d.Values = append(d.Values, float64(i))
+		t = t.Add(1 * time.Hour)
 	}
 
 	return d
@@ -149,9 +190,9 @@ func compare(is, should *Data) error {
 				i, is.Times[i], should.Times[i],
 			))
 		}
-		if math.Abs(is.Values[i]-should.Values[i]) < 1e-5 {
-			return errors.New(fmt.Sprintf("%d values not equal: is(%s), should(%s)",
-				i, is.Times[i], should.Times[i],
+		if !floatEqual(is.Values[i], should.Values[i]) {
+			return errors.New(fmt.Sprintf("%d values not equal: is(%f), should(%f)",
+				i, is.Values[i], should.Values[i],
 			))
 		}
 	}
