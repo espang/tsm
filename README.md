@@ -1,27 +1,18 @@
-## tsm
+## Tsm
 
-Time series managment daemon.
+Time series managment written in golang.
 
-## Motivation
+## Project Status
 
-Motivation for this project...
+The project is in development...
 
-## Time series
+## Getting started
 
-Time series are represented by following attributes:
+### Installation
 
+To start using Tsm, install Go and run `go get`:
 
-```go
-type Frequency struct {
-	Steps int
-	Unit  GridType
-}
-
-type TsAttribute struct {
-	Id       string
-	SoY      *StartOfYear
-	Freq     Frequency
-	Location *time.Location
-	Periodic bool
-}
+```sh
+$ go get github.com/espang/tsm
 ```
+
