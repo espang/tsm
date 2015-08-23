@@ -1,18 +1,9 @@
 ## Tsm
 
-Time series managment written in golang.
+Samples/ code snippets for building a Timeseries Managment System. Timeseries are a chronological list of Timestamp-Value pairs.
 
-## Project Status
 
-The project is in development and far from being ready to use.
 
-## Getting started
 
-### Installation
 
-To start using Tsm, install Go and run `go get`:
-
-```sh
-$ go get github.com/espang/tsm
-```
 
