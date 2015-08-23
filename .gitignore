@@ -1,0 +1,9 @@
+# Compiled #
+############
+*.exe
+
+# Ignore Python tmp files #
+###########################
+
+*__pycache__*
+*ipynb_checkpoints*
